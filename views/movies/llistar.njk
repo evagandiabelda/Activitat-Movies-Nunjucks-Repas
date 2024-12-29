@@ -1,0 +1,58 @@
+{% extends "../base.njk" %}
+
+{% block titol %}Llistat de Pel·lícules{% endblock %}
+{% block titolSeccio %}Llistat de Pel·lícules{% endblock %}
+
+{% block contingut %}
+
+<!-- Toast per al missatge d'èxit (per a quan s'esborra una peli): -->
+{% if success %}
+<div class="toast align-items-center text-bg-success border-0 position-fixed bottom-0 end-0 m-3" style="z-index: 1050;"
+    role="alert" aria-live="assertive" aria-atomic="true" id="successToast">
+    <div class="d-flex">
+        <div class="toast-body">
+            {{ success }}
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+            aria-label="Close"></button>
+    </div>
+</div>
+{% endif %}
+
+<!-- LListat de Pelis: -->
+<div class="mx-auto mt-4" style="max-width: 1000px;">
+    <ul class="list-group">
+        {% for movie in movies %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>{{ movie.title }}</span>
+            <div>
+                <a href="/movies/{{ movie._id }}" class="btn btn-sm btn-light me-2">Visualitzar</a>
+                <form action="/movies/delete/{{ movie._id }}" method="POST" style="display: inline;">
+                    <button class="btn btn-sm btn-danger" type="submit">
+                        <i class="fas fa-trash-alt"></i> <!-- Icono papelera -->
+                    </button>
+                </form>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<script>
+    // Espera a que el DOM esté cargado
+    document.addEventListener("DOMContentLoaded", function () {
+        // Selecciona el toast
+        const toastElement = document.getElementById("successToast");
+
+        if (toastElement) {
+            // Inicializa el toast con el tiempo de desaparición
+            const toast = new bootstrap.Toast(toastElement, { delay: 3000 });
+
+            // Muestra el toast
+            toast.show();
+        }
+    });
+</script>
+
+
+{% endblock %}

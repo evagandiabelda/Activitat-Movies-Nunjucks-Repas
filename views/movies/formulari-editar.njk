@@ -1,0 +1,68 @@
+{% extends "../base.njk" %}
+
+{% block titol %}Editar Pel·lícula{% endblock %}
+{% block titolSeccio %}Editar Pel·lícula{% endblock %}
+
+{% block contingut %}
+
+<div class="mx-auto row" style="max-width: 1000px;">
+    <!-- Previsualizació del pòster -->
+    <div class="col-md-3 d-flex align-items-start">
+        <img src="{{ movie.poster }}" alt="Pòster de la pel·lícula" class="img-fluid"
+            style="max-width: 100%; object-fit: contain;">
+    </div>
+
+    <!-- Formulari -->
+    <div class="col-md-9">
+        <form action="/movies/patch/{{ movie._id }}" method="post" class="row g-3">
+            <div class="col-md-6">
+                <label for="title" class="form-label">Títol:</label>
+                <input type="text" name="title" id="title" class="form-control" placeholder="Títol de la pel·lícula"
+                    value="{{ movie.title }}" required>
+            </div>
+            <div class="col-md-6">
+                <label for="year" class="form-label">Any:</label>
+                <input type="number" name="year" id="year" class="form-control" placeholder="Any d'estrena"
+                    value="{{ movie.year }}" required>
+                {%if errors.year %} <div class="text-danger"> {{errors.year.message}} </div> {% endif %}
+            </div>
+            <div class="col-md-6">
+                <label for="director" class="form-label">Director:</label>
+                <input type="text" name="director" id="director" class="form-control" placeholder="Nom del director"
+                    value="{{ movie.director }}" required>
+            </div>
+            <div class="col-md-6">
+                <label for="duration" class="form-label">Duració:</label>
+                <input type="number" name="duration" id="duration" class="form-control" placeholder="Duració en minuts"
+                    value="{{ movie.duration }}" required>
+            </div>
+            <div class="col-md-6">
+                <label for="genre" class="form-label">Gèneres:</label>
+                <select id="genre" name="genre" multiple class="form-control">
+                    {% for genre in genres %}
+                    <option value="{{ genre._id }}" {% if genre._id in movie.genre %} selected {% endif %}>
+                        {{ genre.title }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="rate" class="form-label">Puntuació:</label>
+                <input type="number" name="rate" id="rate" class="form-control" placeholder="0/10"
+                    value="{{ movie.rate }}" required>
+            </div>
+            <div class="col-md-12">
+                <label for="poster" class="form-label">URL del Pòster:</label>
+                <input type="text" name="poster" id="poster" class="form-control" placeholder="URL del pòster"
+                    value="{{ movie.poster }}" required>
+            </div>
+
+            <div class="col-md-12 text-end my-5">
+                <a href="/movies" class="btn btn-secondary">Cancel·lar</a>
+                <button type="submit" class="btn btn-dark">Guardar canvis</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

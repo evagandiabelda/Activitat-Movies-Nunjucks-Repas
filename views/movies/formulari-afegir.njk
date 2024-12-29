@@ -1,0 +1,54 @@
+<!-- /movies/formulari.njk -->
+
+{% extends "../base.njk" %}
+
+{% block titol %}Afegir Pel·lícula{% endblock %}
+{% block titolSeccio %}Afegir Pel·lícula{% endblock %}
+
+{% block contingut %}
+
+<form action="/movies" method="post" class="mx-auto row g-3" style="max-width: 1000px;">
+    <div class="col-md-6">
+        <label for="title" class="form-label">Títol:</label>
+        <input type="text" name="title" id="title" class="form-control" placeholder="Títol de la pel·lícula" required>
+    </div>
+    <div class="col-md-6">
+        <label for="year" class="form-label">Any:</label>
+        <input type="number" name="year" id="year" class="form-control" placeholder="Any d'estrena" required>
+        {%if errors.year %} <div class="text-danger"> {{errors.year.message}} </div> {% endif %}
+    </div>
+    <div class="col-md-6">
+        <label for="director" class="form-label">Director:</label>
+        <input type="text" name="director" id="director" class="form-control" placeholder="Nom del director" required>
+    </div>
+    <div class="col-md-6">
+        <label for="duration" class="form-label">Duració:</label>
+        <input type="number" name="duration" id="duration" class="form-control" placeholder="Duració en minuts"
+            required>
+    </div>
+    <div class="col-md-6">
+        <label for="genre" class="form-label">Gèneres:</label>
+        <select id="genre" name="genre" multiple class="form-control">
+            {% for genre in genres %}
+            <option value="{{ genre._id }}">
+                {{ genre.title }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-6">
+        <label for="rate" class="form-label">Puntuació</label>
+        <input type="number" name="rate" id="rate" class="form-control" placeholder="0/10" required>
+    </div>
+    <div class="col-md-12">
+        <label for="poster" class="form-label">URL del Pòster:</label>
+        <input type="text" name="poster" id="poster" class="form-control" placeholder="URL del pòster" required>
+    </div>
+
+    <div class="col-12 text-end my-5">
+        <a href="/movies" class="btn btn-secondary">Cancel·lar</a>
+        <button type="submit" class="btn btn-dark">Guardar pel·lícula</button>
+    </div>
+</form>
+
+{% endblock %}

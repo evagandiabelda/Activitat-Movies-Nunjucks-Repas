@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Error</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-danger text-white text-center">
+
+    <div class="container">
+        <h1 class="mt-5">Error</h1>
+
+        <div class="alert alert-danger mt-4">
+            {% if error %}
+            {{ error.message }}
+            {% else %}
+            Error en l'aplicació
+            {% endif %}
+        </div>
+
+        <a href="/movies" class="btn btn-light mt-5 d-block mx-auto" style="width: 200px;">Tornar</a>
+    </div>
+
+</body>
+
+</html>

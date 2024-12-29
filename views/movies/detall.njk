@@ -1,0 +1,33 @@
+{% extends "base.njk" %}
+
+{% block titol %}{{ movie.title }}{% endblock %}
+{% block titolSeccio %}{{ movie.title }}{% endblock %}
+
+{% block contingut %}
+<div class="mx-auto container my-4" style="max-width: 1000px;">
+    <div class="row">
+        <div class="col-md-3">
+            <!-- Imatge del pòster -->
+            <img src="{{ movie.poster }}" alt="Pòster de {{ movie.title }}" class="img-fluid rounded">
+        </div>
+        <div class="col-md-9">
+            <!-- Informació de la peli -->
+            <p><strong>Any:</strong> {{ movie.year }}</p>
+            <p><strong>Director:</strong> {{ movie.director }}</p>
+            <p><strong>Duració:</strong> {{ movie.duration }} min</p>
+            <p><strong>Gèneres:</strong>
+                {% for genre in movie.genre %}
+                {{ genre.title }}
+                {% endfor %}
+            </p>
+            <p><strong>Puntuació:</strong> {{ movie.rate }}/10</p>
+
+            <!-- Botons -->
+            <div class="mt-4 text-end">
+                <a href="/movies" class="btn btn-secondary me-2">← Tornar al llistat</a>
+                <a href="/movies/form-editar/{{ movie._id }}" class="btn btn-dark me-2">Editar</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
