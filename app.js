@@ -1,5 +1,12 @@
 const express = require("express"); // Per a crear el servidor web.
 const nunjucks = require("nunjucks"); // Per a renderitzar les plantilles (vistes).
+const jwt = require('jsonwebtoken'); // Per a generar i verificar JWT (JSON Web Tokens).
+
+// SIMULACIÓ D'USUARIS EXISTENTS:
+const usuaris = [
+  { usuari: 'nacho', password: '12345' },
+  { usuari: 'pepe', password: 'pepe111' }
+];
 
 const app = express();
 app.use(express.json()); // Per a poder llegir JSON del body de les peticions.
@@ -29,6 +36,14 @@ mongoose
   );
 
 // ENDPOINTS:
+
+app.get("/", (req, res) => {
+  res.send({ ok: true, resultat: "Benvingut a la nostra aplicació de pel·lícules." });
+});
+
+app.get('/protegit', (req, res) => {
+  res.send({ ok: true, resultat: "Benvingut a la zona protegida." });
+});
 
 app.use("/api/movies", moviesApiRouter);
 app.use("/movies", moviesRouter);
