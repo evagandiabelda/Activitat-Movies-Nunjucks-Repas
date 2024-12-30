@@ -14,13 +14,6 @@ const mongoDbName = process.env.MONGO_DB_NAME;
 const secret = process.env.SECRET;
 const tokenExpiration = process.env.TOKEN_EXPIRATION;
 
-// SIMULACIÓ D'USUARIS EXISTENTS:
-
-const usuaris = [
-  { usuari: 'nacho', password: '12345', rol: 'admin' },
-  { usuari: 'pepe', password: 'pepe111', rol: 'normal' }
-];
-
 // MIDDLEWARES D'AUTENTICACIÓ:
 
 let generarToken = login => {
