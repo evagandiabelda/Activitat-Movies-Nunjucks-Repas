@@ -9,8 +9,8 @@ app.use(express.urlencoded({ extended: true })); // Per a poder llegir les petic
 // SIMULACIÓ D'USUARIS EXISTENTS:
 
 const usuaris = [
-  { usuari: 'nacho', password: '12345' },
-  { usuari: 'pepe', password: 'pepe111' }
+  { usuari: 'nacho', password: '12345', rol: 'admin' },
+  { usuari: 'pepe', password: 'pepe111', rol: 'normal' }
 ];
 
 // MIDDLEWARES D'AUTENTICACIÓ:
