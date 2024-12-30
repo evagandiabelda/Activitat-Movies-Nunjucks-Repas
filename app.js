@@ -13,12 +13,27 @@ const usuaris = [
   { usuari: 'pepe', password: 'pepe111' }
 ];
 
-// CONFIGURACIÓ DE JWT:
+// MIDDLEWARES D'AUTENTICACIÓ:
 
 const secret = "secretNode";
 
 let generarToken = login => {
     return jwt.sign({login: login}, secret, {expiresIn: "2 hours"});
+};
+
+let protegirRuta = (req, res, next) => {
+  let token = req.headers['authorization'];
+  if (validarToken(token))
+      next();
+  else
+      res.send({ok: false, error: "Usuari no autoritzat"});
+};
+
+let validarToken = (token) => {
+  try {
+      let resultat = jwt.verify(token.substring(7), secret);
+      return resultat;
+  } catch (e) {}
 };
 
 // CONFIGURACIÓ DE NUNJUCKS (VISTES):
@@ -50,7 +65,7 @@ app.get("/", (req, res) => {
   res.send({ ok: true, resultat: "Benvingut a la nostra aplicació de pel·lícules." });
 });
 
-app.get('/protegit', (req, res) => {
+app.get('/protegit', protegirRuta, (req, res) => {
   res.send({ ok: true, resultat: "Benvingut a la zona protegida." });
 });
 
