@@ -2,17 +2,26 @@ const express = require("express"); // Per a crear el servidor web.
 const nunjucks = require("nunjucks"); // Per a renderitzar les plantilles (vistes).
 const jwt = require('jsonwebtoken'); // Per a generar i verificar JWT (JSON Web Tokens).
 
+const app = express();
+app.use(express.json()); // Per a poder llegir JSON del body de les peticions.
+app.use(express.urlencoded({ extended: true })); // Per a poder llegir les peticions per URL (formularis HTML).
+
 // SIMULACIÓ D'USUARIS EXISTENTS:
+
 const usuaris = [
   { usuari: 'nacho', password: '12345' },
   { usuari: 'pepe', password: 'pepe111' }
 ];
 
-const app = express();
-app.use(express.json()); // Per a poder llegir JSON del body de les peticions.
-app.use(express.urlencoded({ extended: true })); // Per a poder llegir les peticions per URL (formularis HTML).
+// CONFIGURACIÓ DE JWT:
 
-// CONFIGURACIÓ DE NUNJUCKS:
+const secret = "secretNode";
+
+let generarToken = login => {
+    return jwt.sign({login: login}, secret, {expiresIn: "2 hours"});
+};
+
+// CONFIGURACIÓ DE NUNJUCKS (VISTES):
 
 app.set("view engine", "njk"); // Establim que les plantilles són de tipus Nunjucks.
 nunjucks.configure("views", {
@@ -20,7 +29,7 @@ nunjucks.configure("views", {
   express: app, // Indica que les plantilles s'han de renderitzar amb Express.
 });
 
-// RUTES:
+// IMPORTACIÓ DE RUTES:
 
 const moviesApiRouter = require("./routes/moviesApiRoutes");
 const moviesRouter = require("./routes/moviesRoutes");
@@ -43,6 +52,19 @@ app.get("/", (req, res) => {
 
 app.get('/protegit', (req, res) => {
   res.send({ ok: true, resultat: "Benvingut a la zona protegida." });
+});
+
+app.post('/login', (req, res) => {
+  let usuari = req.body.usuari;
+  let password = req.body.password;
+
+  let existeixUsuari = usuaris.filter(u => 
+      u.usuari == usuari && u.password == password);
+
+  if (existeixUsuari.length == 1)
+      res.send({ok: true, token: generarToken(usuari)});
+  else
+      res.send({ok: false});
 });
 
 app.use("/api/movies", moviesApiRouter);
