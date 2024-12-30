@@ -1,10 +1,18 @@
 const express = require("express"); // Per a crear el servidor web.
 const nunjucks = require("nunjucks"); // Per a renderitzar les plantilles (vistes).
 const jwt = require('jsonwebtoken'); // Per a generar i verificar JWT (JSON Web Tokens).
+require('dotenv').config(); // Per a llegir les variables d'entorn del fitxer .env.
 
 const app = express();
 app.use(express.json()); // Per a poder llegir JSON del body de les peticions.
 app.use(express.urlencoded({ extended: true })); // Per a poder llegir les peticions per URL (formularis HTML).
+
+// VARIABLES D'ENTORN:
+
+const mongoUri = process.env.MONGO_URI;
+const mongoDbName = process.env.MONGO_DB_NAME;
+const secret = process.env.SECRET;
+const tokenExpiration = process.env.TOKEN_EXPIRATION;
 
 // SIMULACIÓ D'USUARIS EXISTENTS:
 
@@ -15,10 +23,8 @@ const usuaris = [
 
 // MIDDLEWARES D'AUTENTICACIÓ:
 
-const secret = "secretNode";
-
 let generarToken = login => {
-    return jwt.sign({login: login}, secret, {expiresIn: "2 hours"});
+    return jwt.sign({login: login}, secret, {expiresIn: tokenExpiration});
 };
 
 let protegirRuta = (req, res, next) => {
@@ -53,7 +59,7 @@ const moviesRouter = require("./routes/moviesRoutes");
 
 const mongoose = require("mongoose");
 mongoose
-  .connect("mongodb://127.0.0.1:27017/movies")
+  .connect(mongoUri + "/" + mongoDbName)
   .then(() => console.log("S'ha establert la connexió a MongoDB."))
   .catch((err) =>
     console.error("No s'ha pogut establir la connexió a MongoDB.", err)
