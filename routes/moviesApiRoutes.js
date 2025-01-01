@@ -1,21 +1,20 @@
 const express = require("express");
 let router = express.Router();
 const moviesApiController = require("../controllers/moviesApiController");
-const verifyToken = require("./auth-middleware");
 
 // Retornar la llista de pelis (filtrades o no):
-router.get("/", verifyToken, moviesApiController.getMovies);
+router.get("/", moviesApiController.getMovies);
 
 // Retornar una peli segons l'ID:
-router.get("/:id", verifyToken, moviesApiController.getMovieById);
+router.get("/:id", moviesApiController.getMovieById);
 
 // Afegir una nova peli:
-router.post("/", verifyToken, moviesApiController.addMovie);
+router.post("/", moviesApiController.addMovie);
 
 // Modificar una peli:
-router.patch("/:id", verifyToken, moviesApiController.editMovie);
+router.patch("/:id", moviesApiController.editMovie);
 
 // Eliminar una peli:
-router.delete('/:id', verifyToken, moviesApiController.deleteMovie);
+router.delete('/:id', moviesApiController.deleteMovie);
 
 module.exports = router;

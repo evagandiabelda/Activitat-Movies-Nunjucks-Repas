@@ -17,24 +17,8 @@ const tokenExpiration = process.env.TOKEN_EXPIRATION;
 
 // MIDDLEWARES D'AUTENTICACIÓ:
 
-let generarToken = login => {
-    return jwt.sign({login: login}, secret, {expiresIn: tokenExpiration});
-};
-
-let protegirRuta = (req, res, next) => {
-  let token = req.headers['authorization'];
-  if (validarToken(token))
-      next();
-  else
-      res.send({ok: false, error: "Usuari no autoritzat"});
-};
-
-let validarToken = (token) => {
-  try {
-      let resultat = jwt.verify(token.substring(7), secret);
-      return resultat;
-  } catch (e) {}
-};
+const authMiddleware = require(__dirname + '/routes/auth-middleware.js');
+app.use(authMiddleware.verifyCookieToken); // S'aplica a totes les rutes.
 
 // MIDDLEWARE DE GESTIÓ DE COOKIES:
 
@@ -50,6 +34,7 @@ nunjucks.configure("views", {
 
 // IMPORTACIÓ DE RUTES:
 
+const usersRouter = require("./routes/usersRoutes");
 const moviesApiRouter = require("./routes/moviesApiRoutes");
 const moviesRouter = require("./routes/moviesRoutes");
 
@@ -65,26 +50,7 @@ mongoose
 
 // ENDPOINTS:
 
-app.get("/", (req, res) => {
-  res.send({ ok: true, resultat: "Benvingut a la nostra aplicació de pel·lícules." });
-});
-
-app.get('/protegit', protegirRuta, (req, res) => {
-  res.send({ ok: true, resultat: "Benvingut a la zona protegida." });
-});
-
-app.post('/login', (req, res) => {
-  let usuari = req.body.usuari;
-  let password = req.body.password;
-
-  let existeixUsuari = usuaris.filter(u => 
-      u.usuari == usuari && u.password == password);
-
-  if (existeixUsuari.length == 1)
-      res.send({ok: true, token: generarToken(usuari)});
-  else
-      res.send({ok: false});
-});
+app.use("/users", usersRouter);
 
 app.use("/api/movies", moviesApiRouter);
 app.use("/movies", moviesRouter);
