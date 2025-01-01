@@ -1,7 +1,7 @@
 const express = require("express");
 let router = express.Router();
 const moviesApiController = require("../controllers/moviesApiController");
-const verifyToken = require("../routes/validate-token");
+const verifyToken = require("./auth-middleware");
 
 // Retornar la llista de pelis (filtrades o no):
 router.get("/", verifyToken, moviesApiController.getMovies);
