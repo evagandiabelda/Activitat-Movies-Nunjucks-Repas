@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-// Middleware per a validar el token i guardar la sessió:
+// MIDDLEWARE PER A VERIFICAR EL TOKEN I PASSAR L'USUARI A LA SESSIÓ:
 
 const verifyToken = (req, res, next) => {
     // Llegir el token del header de la petició:
@@ -20,9 +20,9 @@ const verifyToken = (req, res, next) => {
     next();
 }
 
-// Middleware per comprovar si l'usuari està autenticat i no deixar passar:
+// MIDDLEWARE PER COMPROVAR SI L'USUARI ESTÀ LOGUEJAT:
 
-exports.loggedIn = (req, res, next) => {
+const loggedIn = (req, res, next) => {
     if (req.session.user){
         next();
     }else{
@@ -30,4 +30,28 @@ exports.loggedIn = (req, res, next) => {
     }
 }
 
-module.exports = verifyToken;
+// MIDDLEWARE PER PASSAR L'USUARI A LES VISTES:
+
+const attachUser = (req, res, next) => {
+    const token = req.cookies.token;
+
+    if (token) {
+        try {
+            const user = jwt.verify(token, process.env.SECRET);
+            res.locals.user = user; // Fer l'usuari accessible a les vistes.
+        } catch (err) {
+            console.error('Error al verificar el token:', err.message);
+            res.locals.user = null; // Si el token no és vàlid, no hi ha usuari.
+        }
+    } else {
+        res.locals.user = null; // Si no hi ha token, no hi ha usuari.
+    }
+
+    next();
+};
+
+module.exports = {
+    verifyToken,
+    loggedIn,
+    attachUser
+}
