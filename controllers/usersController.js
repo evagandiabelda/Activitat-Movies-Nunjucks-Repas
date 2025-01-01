@@ -41,15 +41,13 @@ exports.loginUser = async (req, res) => {
         {expiresIn: TOKEN_EXPIRATION}
     );
 
-    // Retornar el token i les dades de l'usuari:
-    res.json(
-        {
-            username: user.username,
-            userId: user._id,
-            token
-        }
-    );
-}
+    // Guardar el token a les cookies del client:
+    res.cookie('access_token', token, {
+        httpOnly: true, // La cookie no es pot llegir amb JavaScript des del client (només des del servidor).
+        // secure: true,   // La cookie només es pot enviar per HTTPS (per a producció).
+        maxAge: 1000 * 60 * 60 // La cookie expira en 1 hora.
+    }).send({username: user.username, token});
+};
 
 // ----------
 //  SIGN IN:
@@ -79,5 +77,15 @@ exports.registerUser = async (req, res) => {
     );
 
     // Retornar el nom de l'usuari creat (sense el "passwordHash"):
-    res.json(savedUser.username);
-}
+    res.send({
+        username: savedUser.username
+    });
+};
+
+// ----------
+//  LOG OUT::
+// ----------
+
+exports.logoutUser = (req, res) => {
+    res.clearCookie('access_token').redirect('/');
+};

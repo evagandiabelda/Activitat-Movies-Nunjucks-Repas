@@ -8,4 +8,7 @@ router.post('/',usersController.loginUser);
 // Registrar un usuari:
 router.post('/register',usersController.registerUser);
 
+// Tancar la sessió d'un usuari:
+router.post('/logout',usersController.logoutUser);
+
 module.exports = router;

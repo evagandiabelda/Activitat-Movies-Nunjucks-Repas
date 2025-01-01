@@ -1,6 +1,7 @@
 const express = require("express"); // Per a crear el servidor web.
 const nunjucks = require("nunjucks"); // Per a renderitzar les plantilles (vistes).
 const jwt = require('jsonwebtoken'); // Per a generar i verificar JWT (JSON Web Tokens).
+const cookieParser = require('cookie-parser'); // Per a llegir i escriure cookies.
 require('dotenv').config(); // Per a llegir les variables d'entorn del fitxer .env.
 
 const app = express();
@@ -34,6 +35,10 @@ let validarToken = (token) => {
       return resultat;
   } catch (e) {}
 };
+
+// MIDDLEWARE DE GESTIÓ DE COOKIES:
+
+app.use(cookieParser());
 
 // CONFIGURACIÓ DE NUNJUCKS (VISTES):
 
