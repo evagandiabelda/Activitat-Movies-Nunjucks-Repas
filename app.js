@@ -38,13 +38,17 @@ const moviesRouter = require("./routes/moviesRoutes");
 
 const mongoose = require("mongoose");
 mongoose
-  .connect(process.env.MONGO_URI + "/" + process.env.MONGO_DB_NAME)
+  .connect(process.env.MONGODB_URI + "/" + process.env.MONGODB_NAME)
   .then(() => console.log("S'ha establert la connexió a MongoDB."))
   .catch((err) =>
     console.error("No s'ha pogut establir la connexió a MongoDB.", err)
   );
 
 // ENDPOINTS:
+
+app.get('/', (req, res) => {
+  res.send("Benvingut a la ruta d'inici");
+});
 
 app.use("/users", usersRouter);
 
@@ -60,4 +64,6 @@ app.use((req, res) => {
 });
 
 // PORT:
-app.listen(8080);
+app.listen(process.env.PORT, process.env.HOST, () => {
+  console.log(`Servidor escoltant en http://${process.env.HOST}:${process.env.PORT}`);
+});
