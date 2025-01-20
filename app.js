@@ -17,8 +17,8 @@ app.use(cookieParser());
 
 // MIDDLEWARES D'AUTENTICACIÓ:
 
-app.use(authMiddleware.verifyToken); // Verifica el token de l'usuari en totes les rutes (si n'hi ha).
-app.use(authMiddleware.attachUser); // Posa la info de l'usuari a disposició de totes les vistes (si n'hi ha).
+/* app.use(authMiddleware.verifyToken); // Verifica el token de l'usuari en totes les rutes (si n'hi ha). */
+/* app.use(authMiddleware.attachUser); // Posa la info de l'usuari a disposició de totes les vistes (si n'hi ha). */
 
 // CONFIGURACIÓ DE NUNJUCKS (VISTES):
 
