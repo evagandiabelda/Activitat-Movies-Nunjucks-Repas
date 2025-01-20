@@ -8,17 +8,17 @@ const verifyToken = (req, res, next) => {
 
     // Si no hi ha token, es crea una sessió per defecte amb l'usuari a null:
     if (!token) {
-        req.locals.user = null;
+        res.locals.user = null;
         return next();
     }
 
     // Validar el token:
-    try{
+    try {
         const verified = jwt.verify(token, process.env.SECRET);
-        req.locals.user = verified;
-    }catch(err){
+        res.locals.user = verified;
+    } catch (err) {
         console.error('Error al verificar el token:', err.message);
-        req.locals.user = null; // Si no hi ha token, no hi ha usuari.
+        res.locals.user = null; // Si no hi ha token, no hi ha usuari.
     }
 
     next();
@@ -27,16 +27,29 @@ const verifyToken = (req, res, next) => {
 // MIDDLEWARE PER A PASSAR L'USUARI A LES VISTES:
 
 const attachUser = (req, res, next) => {
-    res.locals.user = req.locals.user;
+    const token = req.cookies.access_token;
+
+    if (token) {
+        try {
+            const user = jwt.verify(token, process.env.SECRET);
+            res.locals.user = user; // Usuario accesible para vistas
+        } catch (err) {
+            console.error('Error al verificar el token:', err.message);
+            res.locals.user = null; // Si el token no es válido, no hay usuario
+        }
+    } else {
+        res.locals.user = null; // Si no hay token, no hay usuario
+    }
+
     next();
 };
 
 // MIDDLEWARE PER COMPROVAR SI L'USUARI ESTÀ LOGUEJAT:
 
 const loggedIn = (req, res, next) => {
-    if (req.locals.user){
+    if (req.locals.user) {
         next();
-    }else{
+    } else {
         res.redirect('/users/login');
     }
 }
