@@ -19,6 +19,12 @@
 </div>
 {% endif %}
 
+<!-- Botó Canviar Llistat (favorites/totes): -->
+<div class="d-flex justify-content-center mt-4" style="width: 100%;">
+    <button id="toggle-favorites" class="btn btn-md btn-dark me-2" onclick="toggleFavorites()">Mostrar
+        favorites</button>
+</div>
+
 <!-- LListat de Pelis: -->
 <div class="mx-auto mt-4" style="max-width: 1000px;">
     <ul class="list-group">
@@ -26,10 +32,17 @@
         <li class="list-group-item d-flex justify-content-between align-items-center">
             <span>{{ movie.title }}</span>
             <div>
+                <!-- Icono corazón: -->
+                <button class="btn btn-sm bg-white" type="submit">
+                    <i class="fa-regular fa-heart" style="color:red" onclick="toggleHeart(this)"
+                        onmouseenter="toggleHeart(this)" onmouseleave="toggleHeart(this)"></i>
+                </button>
+                <!-- Botón visualizar: -->
                 <a href="/movies/{{ movie._id }}" class="btn btn-sm btn-light me-2">Visualitzar</a>
+                <!-- Icono papelera: -->
                 <form action="/movies/delete/{{ movie._id }}" method="POST" style="display: inline;">
                     <button class="btn btn-sm btn-danger" type="submit">
-                        <i class="fas fa-trash-alt"></i> <!-- Icono papelera -->
+                        <i class="fas fa-trash-alt"></i>
                     </button>
                 </form>
             </div>
@@ -37,6 +50,9 @@
         {% endfor %}
     </ul>
 </div>
+
+
+<!-- SCRIPT PER AL TOAST: -->
 
 <script>
     // Espera a que el DOM esté cargado
@@ -52,6 +68,15 @@
             toast.show();
         }
     });
+</script>
+
+<!-- SCRIPT PER AL LIKE: -->
+
+<script>
+    function toggleHeart(element) {
+        element.classList.toggle('fa-regular'); // Desactivado (outline)
+        element.classList.toggle('fa-solid');  // Activado (relleno)
+    }
 </script>
 
 
