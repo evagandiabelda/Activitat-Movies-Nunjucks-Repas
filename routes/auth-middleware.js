@@ -4,24 +4,30 @@ const jwt = require('jsonwebtoken');
 
 const verifyToken = (req, res, next) => {
     // Llegir el token del header de la petició:
-    const token = req.cookies.access_token;
+    const token = req.get('authorization');
 
-    // Si no hi ha token, es crea una sessió per defecte amb l'usuari a null:
+    // Comprovar que rebem el token:
     if (!token) {
-        res.locals.user = null;
-        return next();
+        return res.status(401).json({
+            error: 'Access denied'
+        })
     }
 
-    // Validar el token:
     try {
-        const verified = jwt.verify(token, process.env.SECRET);
-        res.locals.user = verified;
-    } catch (err) {
-        console.error('Error al verificar el token:', err.message);
-        res.locals.user = null; // Si no hi ha token, no hi ha usuari.
-    }
+        // Eliminar el prefix 'Bearer ' del token:
+        const tokenWithoutBearer = token.substring(7);
 
-    next();
+        // Validar el token:
+        const verified = jwt.verify(tokenWithoutBearer, process.env.SECRET_KEY);
+
+        req.user = verified;
+
+        next();
+    } catch (error) {
+        res.status(400).json({
+            error: 'Invalid token'
+        })
+    }
 }
 
 // MIDDLEWARE PER A PASSAR L'USUARI A LES VISTES:
