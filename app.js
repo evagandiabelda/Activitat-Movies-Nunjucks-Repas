@@ -11,6 +11,9 @@ const app = express();
 app.use(express.json()); // Per a poder llegir JSON del body de les peticions.
 app.use(express.urlencoded({ extended: true })); // Per a poder llegir les peticions per URL (formularis HTML).
 
+// MIDDLEWARES PER A ARXIUS ESTÀTICS (carpeta 'public'):
+app.use(express.static('public'));
+
 // MIDDLEWARE DE GESTIÓ DE COOKIES:
 
 app.use(cookieParser());

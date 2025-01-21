@@ -49,6 +49,11 @@ const movieSchema = new mongoose.Schema({
         required: [true, 'La puntuació és obligatòria.'],
         min: [0, 'La puntuació mínima és 0.'],
         max: [10, 'La puntuació màxima és 10.']
+    },
+    isFavorite: {
+        type: Boolean,
+        default: false,
+        required: true
     }
 });
 

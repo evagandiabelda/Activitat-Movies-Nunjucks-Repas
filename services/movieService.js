@@ -97,6 +97,7 @@ addMovieService = async (req) => {
       poster,
       genre,
       rate: Number(rate),
+      isFavorite: false,
     });
 
     return newMovie;
@@ -120,9 +121,11 @@ editMovieService = async (req) => {
     const updates = req.body;
 
     // Convertim a número:
-    updates.year = Number(updates.year);
-    updates.duration = Number(updates.duration);
-    updates.rate = Number(updates.rate);
+    if (updates.year !== undefined) updates.year = Number(updates.year);
+    if (updates.duration !== undefined) updates.duration = Number(updates.duration);
+    if (updates.rate !== undefined) updates.rate = Number(updates.rate);
+
+    console.log("Valor rebut:", updates);
 
     // "new: true" -> Fa els canvis i retorna el document actualitzat.
     // Si no s'especifica, retorna l'anterior i hi hauria que fer una altra consulta.
@@ -131,6 +134,8 @@ editMovieService = async (req) => {
     if (!updatedMovie) {
       throw new Error("No s'ha trobat la pel·lícula.");
     }
+
+    console.log("Valor enviat:", updatedMovie.isFavorite);
 
     return updatedMovie;
   } catch (error) {

@@ -34,8 +34,8 @@
             <div>
                 <!-- Icono corazón: -->
                 <button class="btn btn-sm bg-white" type="submit">
-                    <i class="fa-regular fa-heart" style="color:red" onclick="toggleHeart(this)"
-                        onmouseenter="toggleHeart(this)" onmouseleave="toggleHeart(this)"></i>
+                    <i id="heart-icon" class="fa-regular fa-heart" style="color:red"
+                        data-is-favorite="{{ movie.isFavorite }}" onclick="toggleFav(this, '{{ movie._id }}')"></i>
                 </button>
                 <!-- Botón visualizar: -->
                 <a href="/movies/{{ movie._id }}" class="btn btn-sm btn-light me-2">Visualitzar</a>
@@ -51,33 +51,7 @@
     </ul>
 </div>
 
-
-<!-- SCRIPT PER AL TOAST: -->
-
-<script>
-    // Espera a que el DOM esté cargado
-    document.addEventListener("DOMContentLoaded", function () {
-        // Selecciona el toast
-        const toastElement = document.getElementById("successToast");
-
-        if (toastElement) {
-            // Inicializa el toast con el tiempo de desaparición
-            const toast = new bootstrap.Toast(toastElement, { delay: 3000 });
-
-            // Muestra el toast
-            toast.show();
-        }
-    });
-</script>
-
-<!-- SCRIPT PER AL LIKE: -->
-
-<script>
-    function toggleHeart(element) {
-        element.classList.toggle('fa-regular'); // Desactivado (outline)
-        element.classList.toggle('fa-solid');  // Activado (relleno)
-    }
-</script>
-
+<!-- SCRIPTS: -->
+<script src="/js/scripts.js"></script>
 
 {% endblock %}

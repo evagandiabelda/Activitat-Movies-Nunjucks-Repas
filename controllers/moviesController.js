@@ -19,7 +19,7 @@ getMovies = async (req, res) => {
     const success = req.query.success;
     res.render("movies/llistar", { movies: filteredMovies, success });
   } catch (error) {
-    res.render('error', {error});
+    res.render('error', { error });
   }
 };
 
@@ -32,7 +32,7 @@ showFormAfegir = async (req, res) => {
     const genres = await Genre.find();
     res.render("movies/formulari-afegir", { genres: genres });
   } catch (error) {
-    res.render('error', {error});
+    res.render('error', { error });
   }
 };
 
@@ -46,7 +46,7 @@ showFormEditar = async (req, res) => {
     const genres = await Genre.find();
     res.render("movies/formulari-editar", { movie: movie, genres: genres });
   } catch (error) {
-    res.render('error', {error});
+    res.render('error', { error });
   }
 };
 
@@ -59,7 +59,7 @@ getMovieById = async (req, res) => {
     const foundMovie = await getMovieByIdService(req);
     res.render("movies/detall", { movie: foundMovie });
   } catch (error) {
-    res.render('error', {error});
+    res.render('error', { error });
   }
 };
 
@@ -114,7 +114,7 @@ deleteMovie = async (req, res) => {
     await deleteMovieService(req);
     res.redirect("/movies?success=Pel·lícula eliminada correctament.");
   } catch (error) {
-    res.render('error', {error});
+    res.render('error', { error });
   }
 };
 
