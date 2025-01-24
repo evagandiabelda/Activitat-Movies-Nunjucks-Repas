@@ -6,6 +6,9 @@ const authMiddleware = require("./auth-middleware");
 // Retornar la llista de pelis (filtrades o no):
 router.get("/", moviesController.getMovies);
 
+// Retornar la llista de pelis (ordenades):
+router.get("/ordered", moviesController.getOrderedMovies);
+
 // Mostrar el formulari per a afegir una nova peli:
 router.get("/form-afegir", moviesController.showFormAfegir);
 

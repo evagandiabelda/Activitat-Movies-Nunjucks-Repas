@@ -15,6 +15,8 @@ getMoviesService = async (req) => {
       director,
       duration: maxDuration,
       rate: minRate,
+      isFavorite,
+      ordenar,
     } = req.query;
 
     // 2. FILTRAR:
@@ -41,12 +43,31 @@ getMoviesService = async (req) => {
       if (genreDoc) filters.genre = genreDoc._id;
     }
 
-    // 3. TORNAR EL LLISTAT DE PEL·LÍCULES:
+    // Búsqueda per boolean:
+    if (isFavorite !== undefined) filters.isFavorite = isFavorite;
+
+    // 4. TORNAR EL LLISTAT DE PEL·LÍCULES:
+
+    /* return Movie.find(filters).sort({ title: 1 }); */
     return await Movie.find(filters);
+
   } catch (error) {
     throw new Error("No s'han pogut obtindre les pel·lícules.");
   }
 };
+
+// -----------------------------------------------------------
+// GETORDEREDMOVIES: Retornar el llistat de pelis (ordenades):
+// -----------------------------------------------------------
+
+getOrderedMoviesService = async (req) => {
+  try {
+    const orderedMovies = await Movie.find().sort({ title: 1 });
+    return orderedMovies;
+  } catch (error) {
+    throw new Error("No s'han pogut obtindre les pel·lícules ordenades.");
+  }
+}
 
 // --------------------------------------------
 // GETMOVIEBYID: Retornar una peli segons l'ID:
@@ -125,8 +146,6 @@ editMovieService = async (req) => {
     if (updates.duration !== undefined) updates.duration = Number(updates.duration);
     if (updates.rate !== undefined) updates.rate = Number(updates.rate);
 
-    console.log("Valor rebut:", updates);
-
     // "new: true" -> Fa els canvis i retorna el document actualitzat.
     // Si no s'especifica, retorna l'anterior i hi hauria que fer una altra consulta.
     const updatedMovie = await Movie.findByIdAndUpdate(id, updates, { new: true, runValidators: true });
@@ -134,8 +153,6 @@ editMovieService = async (req) => {
     if (!updatedMovie) {
       throw new Error("No s'ha trobat la pel·lícula.");
     }
-
-    console.log("Valor enviat:", updatedMovie.isFavorite);
 
     return updatedMovie;
   } catch (error) {
@@ -170,6 +187,7 @@ deleteMovieService = async (req) => {
 
 module.exports = {
   getMoviesService,
+  getOrderedMoviesService,
   getMovieByIdService,
   addMovieService,
   editMovieService,

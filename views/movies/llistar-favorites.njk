@@ -1,7 +1,7 @@
 {% extends "../base.njk" %}
 
-{% block titol %}Llistat de Pel·lícules{% endblock %}
-{% block titolSeccio %}Llistat de Pel·lícules{% endblock %}
+{% block titol %}Llistat de Pel·lícules Favorites{% endblock %}
+{% block titolSeccio %}Llistat de Pel·lícules Favorites{% endblock %}
 
 {% block contingut %}
 
@@ -23,10 +23,11 @@
 
     <div>
         <!-- Botó Canviar Llistat (favorites/totes): -->
-        <a href="/movies?isFavorite=true" id="toggle-favorites" class="btn btn-md btn-dark me-2">Mostrar favorites</a>
+        <a href="/movies" id="toggle-favorites" class="btn btn-md btn-dark me-2">Mostrar totes</a>
 
         <!-- Botó Ordenar Llistat (alfabèticament): -->
-        <a href="/movies/ordered" id="toggle-ord" class="btn btn-md btn-dark me-2">Ordenar alfabèticament</a>
+        <a href="/movies/ordered" id="toggle-ord" class="btn btn-md btn-dark me-2">Ordenar
+            alfabèticament</a>
     </div>
 
     <!-- Buscador: -->

@@ -1,3 +1,17 @@
+/* --------- CANVIAR EL TEXT DEL BOTÓ FAVORITS: --------- */
+
+async function toggleTextFav(element) {
+    // Obtenir l'estat actual:
+    const isActive = element.innerText === 'Mostrar totes';
+
+    // Canviar l'aparença:
+    if (isActive) {
+        element.innerText = 'Mostrar favorites';
+    } else {
+        element.innerText = 'Mostrar totes';
+    }
+}
+
 /* --------- ASSIGNAR L'ESTAT CORRESPONENT A CADA COR INICIALMENT: --------- */
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -53,6 +67,20 @@ async function toggleFav(element, movieId) {
         element.classList.toggle('fa-regular', !isActive);
         element.classList.toggle('fa-solid', isActive);
         alert('Ha ocorregut un error en actualitzar l\'estat de la pel·lícula.');
+    }
+}
+
+/* --------- CANVIAR EL TEXT DEL BOTÓ ORDENAR: --------- */
+
+async function toggleTextOrd(element) {
+    // Obtenir l'estat actual:
+    const isActive = element.innerText === 'Ordenar alfabèticament';
+
+    // Canviar l'aparença:
+    if (isActive) {
+        element.innerText = 'Ordenar cronològicament';
+    } else {
+        element.innerText = 'Ordenar alfabèticament';
     }
 }
 

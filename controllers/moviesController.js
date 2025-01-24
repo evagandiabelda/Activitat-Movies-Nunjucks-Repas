@@ -1,5 +1,6 @@
 const {
   getMoviesService,
+  getOrderedMoviesService,
   getMovieByIdService,
   addMovieService,
   editMovieService,
@@ -17,11 +18,40 @@ getMovies = async (req, res) => {
   try {
     const filteredMovies = await getMoviesService(req);
     const success = req.query.success;
-    res.render("movies/llistar", { movies: filteredMovies, success });
+
+    // Si s'està filtrant per favorites:
+    if (req.query.isFavorite) {
+      res.render("movies/llistar-favorites", { movies: filteredMovies, success });
+    }
+
+    // Si s'està filtrant per altres paràmetres:
+    if (req.query.genre || req.query.title || req.query.year || req.query.director || req.query.duration || req.query.rate) {
+      res.render("movies/llistar-resultats", { movies: filteredMovies, success });
+    }
+
+    // Si no s'està filtrant per res:
+    if (Object.keys(req.query).length === 0) {
+      res.render("movies/llistar", { movies: filteredMovies, success });
+    }
+
   } catch (error) {
     res.render('error', { error });
   }
 };
+
+// -----------------------------------------------------------
+// GETORDEREDMOVIES: Retornar el llistat de pelis (ordenades):
+// -----------------------------------------------------------
+
+getOrderedMovies = async (req, res) => {
+  try {
+    const orderedMovies = await getOrderedMoviesService(req);
+    const success = req.query.success;
+    res.render("movies/llistar-ordenades", { movies: orderedMovies, success });
+  } catch (error) {
+    res.render('error', { error });
+  }
+}
 
 // -----------------------------------------------------------
 // SHOWFORMAFEGIR: Mostrar el formulari per a afegir una peli:
@@ -120,6 +150,7 @@ deleteMovie = async (req, res) => {
 
 module.exports = {
   getMovies,
+  getOrderedMovies,
   showFormAfegir,
   showFormEditar,
   getMovieById,
